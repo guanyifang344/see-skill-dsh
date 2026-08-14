@@ -28,6 +28,23 @@ class RemoveRuleTests(unittest.TestCase):
         self.assertTrue(onboard.agents_rule_installed(created))
         self.assertEqual(install_dsh.remove_rule_from(created), "")
 
+    def test_copy_skill_replaces_stale_files(self) -> None:
+        import tempfile
+
+        with tempfile.TemporaryDirectory(prefix="see-copy-") as tmp:
+            src = Path(tmp) / "src"
+            dst = Path(tmp) / "dst"
+            src.mkdir()
+            dst.mkdir()
+            (src / "SKILL.md").write_text("new", encoding="utf-8")
+            (src / "scripts").mkdir()
+            (src / "scripts" / "see.sh").write_text("new", encoding="utf-8")
+            (dst / "SKILL.md").write_text("old", encoding="utf-8")
+            (dst / "stale.py").write_text("old", encoding="utf-8")
+            install_dsh.copy_skill(src, dst)
+            self.assertEqual((dst / "SKILL.md").read_text(encoding="utf-8"), "new")
+            self.assertFalse((dst / "stale.py").exists())
+
     def test_project_root_falls_back_to_start_without_git(self) -> None:
         with unittest.mock.patch("pathlib.Path.exists", return_value=False):
             self.assertEqual(install_dsh.project_root(Path("/tmp/x")), Path("/tmp/x"))

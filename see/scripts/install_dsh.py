@@ -42,6 +42,10 @@ def skill_source() -> Path:
 
 def copy_skill(source: Path, target: Path) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
+    # Managed content: replace the previous install so files removed from
+    # newer versions do not linger and shadow the current bundle.
+    if target.is_dir() and not target.is_symlink():
+        shutil.rmtree(target)
     shutil.copytree(
         source,
         target,
