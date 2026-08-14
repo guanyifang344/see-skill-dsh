@@ -28,10 +28,10 @@ class AgentsRuleTests(unittest.TestCase):
 
         existing = "保持简洁。\n"
         first = onboard.upsert_agents_rule(existing)
-        second = onboard.upsert_agents_rule(first.replace("Invoke the `see` skill", "Invoke the `see` skill now"))
+        second = onboard.upsert_agents_rule(first.replace("Load the `see` skill", "Load the `see` skill now"))
         self.assertIn("保持简洁。", second)
         self.assertEqual(second.count(onboard.SEE_AGENTS_START), 1)
-        self.assertIn("Invoke the `see` skill and run", second)
+        self.assertIn("SEE_OUTPUT_DIR=. scripts/see.sh", second)
 
     def test_install_agents_rule_is_idempotent(self) -> None:
         with tempfile.TemporaryDirectory(prefix="see-agents-") as tmp:

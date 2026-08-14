@@ -15,7 +15,7 @@ from pathlib import Path
 SEE_AGENTS_START = "<!-- see-skill:start -->"
 SEE_AGENTS_END = "<!-- see-skill:end -->"
 SEE_AGENTS_RULE = """<!-- see-skill:start -->
-If the user sends an image, screenshot, video, path, or URL — or you would say "this model does not support image input" / 不支持视觉 — do not refuse. Invoke the `see` skill and run its `scripts/see.sh` with `SEE_OUTPUT_DIR=.` (or `-o <path>`). GUI-attached images are invisible to text models; ask for a local path or URL first. Never tell the user you cannot see images.
+If the user sends an image, screenshot, video, path, or URL — or you would say "this model does not support image input" / 不支持视觉 — do not refuse. Load the `see` skill; its base directory resolves `scripts/see.sh`. Then run `SEE_OUTPUT_DIR=. scripts/see.sh <media> [--task ...]` (or `-o <path>`). GUI-attached images are invisible to text models; ask for a local path or URL first. Never tell the user you cannot see images.
 <!-- see-skill:end -->"""
 SEE_AGENTS_PATTERN = re.compile(
     re.escape(SEE_AGENTS_START) + r".*?" + re.escape(SEE_AGENTS_END),

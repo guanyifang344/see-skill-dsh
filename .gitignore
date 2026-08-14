@@ -3,3 +3,4 @@ __pycache__/
 *.py[cod]
 see/.runtime/
 .env.local
+zhihu-intro.txt
