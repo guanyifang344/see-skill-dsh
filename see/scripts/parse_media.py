@@ -23,6 +23,8 @@ from typing import Any
 from urllib import error, request
 from urllib.parse import urlparse
 
+from _version import VERSION
+
 
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".tiff", ".svg"}
 VIDEO_EXTS = {".mp4", ".mov", ".mpeg", ".mpg", ".webm", ".avi", ".mkv", ".wmv", ".flv", ".3gp"}
@@ -1114,6 +1116,7 @@ def frontmatter(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="See images and videos with multimodal APIs.")
+    parser.add_argument("--version", action="version", version=f"see {VERSION}")
     parser.add_argument("inputs", nargs="*", help="Image or video paths/URLs.")
     parser.add_argument("--image", action="append", default=[], help="Media path or URL; repeatable.")
     parser.add_argument("--task", default="", help="Optional focus.")

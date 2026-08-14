@@ -23,6 +23,7 @@ import sys
 from pathlib import Path
 
 import onboard  # reuses SEE_AGENTS_RULE / upsert / install helpers
+from _version import VERSION
 
 SKILL_NAME = "see"
 
@@ -67,6 +68,7 @@ def status_report(target: Path, agents: Path | None) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="将 see skill 安装到 DeepSeek Harness。")
+    parser.add_argument("--version", action="version", version=f"see-skill-dsh {VERSION}")
     root_group = parser.add_mutually_exclusive_group()
     root_group.add_argument(
         "--root",

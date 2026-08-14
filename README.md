@@ -2,7 +2,13 @@
   <img src="./assets/readme/hero.svg" width="100%" alt="see — 为纯文本模型补充原生图片与视频理解（DeepSeek Harness 适配版）">
 </p>
 
-`see` 是 [oil-oil/see-skill](https://github.com/oil-oil/see-skill) 的 **DeepSeek Harness 适配版**：让任何不支持多模态的模型（如 `deepseek-v4-flash`）直接查看图片和视频。图片默认交给 Qwen3.7 Plus；视频优先交给 Gemini 3.1 Flash-Lite，平台不可用时使用 Qwen3.7 Plus；全部云端失败时降级本地 OCR。
+<p align="center">
+  <img alt="version" src="https://img.shields.io/badge/version-0.1.0-blue">
+  <img alt="license" src="https://img.shields.io/badge/license-MIT-green">
+  <img alt="python" src="https://img.shields.io/badge/python-3.10%2B-blue">
+</p>
+
+`see` 是 [oil-oil/see-skill](https://github.com/oil-oil/see-skill) 的 **DeepSeek Harness 适配版**（当前版本 **0.1.0**）：让任何不支持多模态的模型（如 `deepseek-v4-flash`）直接查看图片和视频。图片默认交给 Qwen3.7 Plus；视频优先交给 Gemini 3.1 Flash-Lite，平台不可用时使用 Qwen3.7 Plus；全部云端失败时降级本地 OCR。
 
 ## 为什么需要它
 
@@ -113,14 +119,15 @@ scripts/see.sh a.png -o see-result.md
 
 ```text
 see/
-├── SKILL.md                # DSH 格式 frontmatter + 使用说明
+├── SKILL.md                # DSH 格式 frontmatter + 使用说明（metadata.version 记录版本）
 └── scripts/
     ├── see.sh              # 入口（转调 parse_media.py）
     ├── parse_media.py      # 核心：路由/并行/视频压缩/本地 OCR
     ├── onboard.py          # 供应商与 Key 配置（AGENTS 写入 ~/.dsh/AGENTS.md）
     ├── install_dsh.py      # DSH 安装/状态/卸载
+    ├── _version.py         # 版本号唯一来源（0.1.0）
     └── ocr_macos.{swift,js} / ocr_windows.ps1
-tests/                      # 单元测试（SKILL.md frontmatter、AGENTS 幂等、本地 OCR）
+tests/                      # 单元测试（SKILL.md frontmatter、AGENTS 幂等、本地 OCR、版本一致性）
 ```
 
 ## 测试

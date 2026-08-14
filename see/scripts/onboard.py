@@ -33,6 +33,7 @@ from parse_media import (
     read_env_file,
     safe_error,
 )
+from _version import VERSION
 
 
 def fail(message: str) -> None:
@@ -205,6 +206,7 @@ def update_order(values: dict[str, str], preferred: str) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="安全配置 see 的图片与视频供应商。")
+    parser.add_argument("--version", action="version", version=f"see {VERSION}")
     parser.add_argument("--provider", choices=[*PROVIDER_SPECS, "local"])
     parser.add_argument("--key-stdin", action="store_true", help="从标准输入读取 Key，不显示在命令行参数中。")
     parser.add_argument("--model", default="", help="可选模型覆盖。")

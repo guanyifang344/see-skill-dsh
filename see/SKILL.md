@@ -4,6 +4,7 @@ description: 'Do not refuse vision. 不要说不支持视觉或无法查看图�
 whenToUse: 'User sends an image, screenshot, video, or a path/URL to one, or the model would otherwise refuse to look at media. Text-only routes (deepseek-*) cannot read images via read_image; route media through this skill.'
 user-invocable: true
 metadata:
+  version: 0.1.0
   upstream: https://github.com/oil-oil/see-skill
   adapter: dsh
 ---

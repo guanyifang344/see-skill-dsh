@@ -33,6 +33,15 @@ class AgentsRuleTests(unittest.TestCase):
         self.assertEqual(second.count(onboard.SEE_AGENTS_START), 1)
         self.assertIn("SEE_OUTPUT_DIR=. scripts/see.sh", second)
 
+    def test_version_matches_skill_metadata(self) -> None:
+        from _version import VERSION
+
+        skill = (Path(__file__).resolve().parents[1] / "see" / "SKILL.md").read_text(
+            encoding="utf-8"
+        )
+        meta = skill.split("metadata:", 1)[1].split("---", 1)[0]
+        self.assertIn(f"version: {VERSION}", meta)
+
     def test_install_agents_rule_is_idempotent(self) -> None:
         with tempfile.TemporaryDirectory(prefix="see-agents-") as tmp:
             path = Path(tmp) / "AGENTS.md"
