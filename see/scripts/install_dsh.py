@@ -50,7 +50,8 @@ def copy_skill(source: Path, target: Path) -> None:
 
 
 def remove_rule_from(text: str) -> str:
-    return onboard.SEE_AGENTS_PATTERN.sub("", text).rstrip() + "\n" if text.strip() else ""
+    cleaned = onboard.SEE_AGENTS_PATTERN.sub("", text).strip()
+    return cleaned + "\n" if cleaned else ""
 
 
 def status_report(target: Path, agents: Path | None) -> None:
@@ -60,7 +61,7 @@ def status_report(target: Path, agents: Path | None) -> None:
         text = agents.read_text(encoding="utf-8") if agents.is_file() else ""
         print(f"拒绝覆盖规则：{agents} —— {'已写入' if onboard.agents_rule_installed(text) else '未写入'}")
     if not installed:
-        print(f"运行 python3 {skill_source().parent.name}/scripts/install_dsh.py 安装。")
+        print(f"运行 python3 {skill_source() / 'scripts' / 'install_dsh.py'} 安装。")
     print()
 
 
@@ -108,7 +109,11 @@ def main() -> int:
         if agents and agents.is_file():
             text = agents.read_text(encoding="utf-8")
             if onboard.agents_rule_installed(text):
-                agents.write_text(remove_rule_from(text), encoding="utf-8")
+                cleaned = remove_rule_from(text)
+                if cleaned:
+                    agents.write_text(cleaned, encoding="utf-8")
+                else:
+                    agents.unlink()
                 print(f"拒绝覆盖规则：已移除（{agents}）")
             else:
                 print(f"拒绝覆盖规则：不存在（{agents}）")

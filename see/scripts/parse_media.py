@@ -266,7 +266,11 @@ def download_media(url: str, destination: Path) -> Path:
     total = 0
     with request.urlopen(req, timeout=120) as response:
         content_type = response.headers.get_content_type()
-        if not (content_type.startswith("image/") or content_type.startswith("video/")):
+        known_media = destination.suffix.lower() in MEDIA_EXTS
+        # Some CDNs serve images/videos as application/octet-stream even when
+        # the URL ends in a known media extension; trust the URL in that case,
+        # and only enforce the content-type gate for extensionless URLs.
+        if not known_media and not (content_type.startswith("image/") or content_type.startswith("video/")):
             raise RuntimeError(f"URL is not an image or video: {content_type}")
         if destination.suffix == ".media":
             suffix = mimetypes.guess_extension(content_type) or ".img"

@@ -62,5 +62,24 @@ class LocalBackendTests(unittest.TestCase):
                 self.assertIn(expected, parse_media.local_setup_hint())
 
 
+class JsonRobustTests(unittest.TestCase):
+    def test_clean_json(self) -> None:
+        self.assertEqual(parse_media.parse_json_robust('{"a": 1}'), {"a": 1})
+
+    def test_trailing_noise_is_ignored(self) -> None:
+        raw = '{"backend": "macos-vision-enhanced", "items": []}\n' \
+              "E5RT encountered an STL exception. msg = Error building plan"
+        result = parse_media.parse_json_robust(raw)
+        self.assertEqual(result["backend"], "macos-vision-enhanced")
+
+    def test_leading_noise_falls_back_to_brace_window(self) -> None:
+        raw = "warning line\n{\"a\": [1, 2]}\ntrailing junk"
+        self.assertEqual(parse_media.parse_json_robust(raw), {"a": [1, 2]})
+
+    def test_unparseable_output_raises(self) -> None:
+        with self.assertRaises(ValueError):
+            parse_media.parse_json_robust("not json at all")
+
+
 if __name__ == "__main__":
     unittest.main()

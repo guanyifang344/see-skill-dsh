@@ -107,7 +107,7 @@ scripts/see.sh a.png -o see-result.md
 | onboard 交互式输 Key | 机制不变，但 Key 配置在**用户自己的终端**运行（DSH 的 bash 无 TTY） |
 | 结果写 `~/.local/share/see/outputs` | 调用时带 `SEE_OUTPUT_DIR=.` / `-o` 写进工作区 |
 
-核心脚本（`parse_media.py`、`ocr_*`）与上游一致，仅对 `parse_media.py` 的 `run_json` 做了健壮性补丁。
+核心脚本（`parse_media.py`、`ocr_*`）与上游一致，仅做了少量健壮性补丁：`run_json` 容忍系统框架的 stdout 杂音（如沙箱下的 E5RT 报错）、URL 下载对带媒体扩展名的 `application/octet-stream` 响应放行。
 
 ## 文件结构
 
